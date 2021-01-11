@@ -23,9 +23,9 @@ void setup() {
 
 void loop() {
   ui.ui_menu();
-  /*String user_selection = ui.ui_menu();
+  String user_selection = ui.ui_menu();
   if (user_selection == "START")
   {
     screen.victory();
-  }*/
+  }
 }

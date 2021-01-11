@@ -1,11 +1,10 @@
 #include "Arduino.h"
 #include "user_interface_class.h"
 
-
 // Class Instantiations
 ui_button_class ui_button;
 oled_screen_class oled;
-
+speaker_class speaker;
 
 
 // State Definitions
@@ -39,8 +38,6 @@ String user_interface_class::ui_menu()
             // Catch Weird State
             case INACTIVE:
                 break;
-
-
 
             case MENU_START:
                 if(ui_button.checkSelect() == 1){
@@ -171,8 +168,6 @@ String user_interface_class::ui_menu()
                     oled.cal_back();
                 }
                 break;
-
-
         }
     }
 }
@@ -182,6 +177,10 @@ void user_interface_class::ui_setup()
 {
     // UI Button Setup
     ui_button.ui_button_setup();
+
+    // Speaker Setup
+    speaker.victoryTune();
+    delay(1000);
 
     // OLED Setup
     oled.oled_setup();

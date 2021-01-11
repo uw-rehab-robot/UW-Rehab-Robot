@@ -14,9 +14,8 @@
     // System Libraries
     #include <SPI.h>
     #include <Wire.h>
-    #include <Adafruit_GFX.h>
-    #include <Adafruit_SSD1306.h>
-
+    #include <U8g2lib.h>
+    
     // Local Libraries
     #include "bitmaps_library.h"
 
@@ -38,7 +37,7 @@
             long millisSecond = 1000;   // Measured in millisconds
 
             // Functions
-            void draw_bitmap(uint8_t x_pos, uint8_t y_pos, const uint8_t *bitmap, uint8_t w, uint8_t h, uint8_t color);
+            void draw_bitmap(uint8_t x_pos, uint8_t y_pos, const uint8_t *bitmap, uint8_t w, uint8_t h);
             void wait(long delay);
             void lightShow();
             
@@ -74,7 +73,7 @@
             void eyes_open_2();
             void eyes_resting();
             void eyes_resting_2();
-            void print_text(char str[], int text_size=2);
+            void print_text(char str[], int text_size);
             void victory();
             void display_score();
             void update_score(int newScore);

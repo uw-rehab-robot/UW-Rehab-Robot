@@ -1,0 +1,31 @@
+|Arduino Pins   |Project Function   |Project Pin Name   |Defintion Location                         |
+|---------------------------------------------------------------------------------------------------|
+|~D0/RXI-1      |Ultrasound Trigger |TBD                |TBD                                        |
+|~D1/TXO-1      |UNUSED             |UNUSED             |UNUSED                                     |
+|~D2/A6         |Motor Driver PWMB  |TBD                |TBD                                        |
+|~D3            |Motor Driver BIN2  |TBD                |TBD                                        |
+|~D4            |Motor Driver BIN1  |TBD                |TBD                                        |
+|~D5            |Motor Driver STBY  |TBD                |TBD                                        |
+|~D6            |Motor Driver AIN1  |TBD                |TBD                                        |
+|~D7            |Motor Driver AIN2  |TBD                |TBD                                        |
+|~D8/A8         |Motor Driver PWMA  |TBD                |TBD                                        |
+|~D9/A9         |Speaker            |buzzer_pin         |src/speaker/speaker_functions.cpp          |
+|~D10/A10       |SD Card CS         |TBD                |TBD                                        |
+|~D11/MOSI      |SD Card MOSI       |TBD                |TBD                                        |
+|~D12/MISO      |SD Card MISO       |TBD                |TBD                                        |
+|~D13/SCK       |SD Card SCK        |TBD                |TBD                                        |
+|D14/SDA        |OLED SDA           |U8G2_R0            |src/oled_screen/oled_screen_functions.cpp  |
+|~D15/SCL       |OLED SCL           |U8G2_R0            |src/oled_screen/oled_screen_functions.cpp  |
+|~D16/A0        |IR Sensor 5 OUT    |TBD                |TBD                                        |
+|~D17/A1        |IR Sensor 4 OUT    |TBD                |TBD                                        |
+|D18/A2         |IR Sensor 3 OUT    |TBD                |TBD                                        |
+|~D19/A3        |IR Sensor 2 OUT    |TBD                |TBD                                        |
+|D20/A4         |IR Sensor 1 OUT    |TBD                |TBD                                        |
+|~D21/A5        |Ultrasound Echo    |TBD                |TBD                                        |
+|D24/TP12       |UNUSED             |UNUSED             |UNUSED                                     |
+|D25/TP13       |UNUSED             |UNUSED             |UNUSED                                     |
+|D26/TP14       |UNUSED             |UNUSED             |UNUSED                                     |
+|D27/TP11       |UNUSED             |UNUSED             |UNUSED                                     |
+|~D28/TP9       |User Button        |uiButtonPin        |src/ui_button/ui_button_functions.cpp      |
+|~D29/TP8       |UNUSED             |UNUSED             |UNUSED                                     |
+|---------------------------------------------------------------------------------------------------|
