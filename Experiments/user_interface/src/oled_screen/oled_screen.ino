@@ -6,7 +6,7 @@ OLED Screen Code
 
 // Variables
 int ledPin = 13;                // TEMPORARY
-int buttonPin = 2;              // TO DO: Move Pin Assignment To Global Pin Assignment List
+int buttonPin = 3;              // TO DO: Move Pin Assignment To Global Pin Assignment List
 
 int ledToggle;                  // TEMPORARY
 int previousState = 1;       // Used to determine button transitions
@@ -15,7 +15,7 @@ volatile int buttonFlag;
 int buttonDebounce  = 20;       // Used to debounce button input (20ms)
 int selectTimer     = 500;      // Used to identify Select vs Next (500ms)
 
-int select  = 0;                // User Pressed Select
+int userSelect  = 0;                // User Pressed Select
 int next    = 0;                // User Pressed Next
 
 oled_screen_class oled;
@@ -24,16 +24,16 @@ oled_screen_class oled;
 //----------------------------------------------//
 void setup() {
   // UI Button Setup
-  pinMode(ledPin, OUTPUT);
-  pinMode(buttonPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(2), button_ISR, CHANGE);
+  //pinMode(ledPin, OUTPUT);
+  //pinMode(buttonPin, INPUT_PULLUP);
+  //attachInterrupt(digitalPinToInterrupt(2), button_ISR, CHANGE);
   
   // Class Declaration
   
   
   // Call class function
   oled.oled_setup();
-  delay(500);  // Add two second delay
+  delay(2000);  // Add two second delay
 
   // Request Eyes Resting
   //oled.eyes_resting();
@@ -48,7 +48,7 @@ void setup() {
   //delay(2000);
 
   // Main Menu, Start Highlighted
-  oled.mm_start();
+  oled.menu_start();
   //delay(2000);
 
   // Menu Guide Selected
@@ -112,12 +112,13 @@ void buttonEvent()
       if((millis() - previousPress) > selectTimer)
       {
         //oled.main_menu();
-        select = 1;
+        userSelect = 1;
       }
 
       // Next
       else
       {
+        next = 1;
         // Do nothing
         //oled.eyes_resting();
       }
@@ -135,10 +136,10 @@ void button_ISR()
 
 void loop() {
   // User Interface
-  if (select)
+  if (userSelect)
   {
     ledToggle =! ledToggle;
     digitalWrite(ledPin, ledToggle);
-    select = 0;
+    userSelect = 0;
   }
 }
