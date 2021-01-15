@@ -2,7 +2,8 @@
   Gizmo Project Code
 **************************************************************************/
 
-// Include In-House Libraries
+// Include Libraries
+#include "GizmoPins.h"
 #include "src/user_interface/user_interface_class.h"
 //#include ...Need line following code (Should include motor control and sensors)
 //#include ...Need ultrasound code  (Needs simple function calls with an optional threshold input and returns "touch/no touch")
@@ -12,8 +13,8 @@
 user_interface_class  ui;
 oled_screen_class screen;
 
-// Import Definitions from common.h
-//using namespace defs;
+// Import Definitions from GizmoPins.h
+using namespace PINS;
 
 
 // State Definitions
@@ -105,5 +106,4 @@ void loop()
         current_state = MENU;     // No calibration code so moving back to menu...
         break;
     }
-
 }
