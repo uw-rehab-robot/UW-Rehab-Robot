@@ -176,10 +176,6 @@ void user_interface_class::ui_setup()
     // UI Button Setup
     ui_button.ui_button_setup();
 
-    // Speaker Setup
-    speaker.victoryTune();
-    delay(1000);
-
     // OLED Setup
     oled.oled_setup();
 }
