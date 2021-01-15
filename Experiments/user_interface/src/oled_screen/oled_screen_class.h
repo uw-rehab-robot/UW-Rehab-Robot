@@ -11,11 +11,12 @@
 #ifndef oled_screen_class_h
   #define oled_screen_class_h
 
-    // System Libraries
+  // System Libraries
     #include <SPI.h>
     #include <Wire.h>
-    #include <U8g2lib.h>
-    
+    #include <Adafruit_GFX.h>
+    #include <Adafruit_SSD1306.h> // Need to comment out line 56 "#define HAVE_PORTREG" as Artemis does not currently support these...
+
     // Local Libraries
     #include "bitmaps_library.h"
 
@@ -37,7 +38,7 @@
             long millisSecond = 1000;   // Measured in millisconds
 
             // Functions
-            void draw_bitmap(uint8_t x_pos, uint8_t y_pos, const uint8_t *bitmap, uint8_t w, uint8_t h);
+            void draw_bitmap(uint8_t x_pos, uint8_t y_pos, const uint8_t *bitmap, uint8_t w, uint8_t h, uint8_t color);
             void wait(long delay);
             void lightShow();
             
