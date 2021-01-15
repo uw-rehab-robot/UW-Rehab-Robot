@@ -1,5 +1,5 @@
-#include "speaker_class.h"
-#include "speaker_tunes.h"
+#include "buzzer_class.h"
+#include "buzzer_tunes.h"
 
 
 // Local Variables
@@ -9,7 +9,7 @@ int divider = 0, noteDuration = 0;
 
 
 // Class Functions
-void speaker_class::playTune(int melody[], int notes, int tempo)
+void buzzer_class::playTune(int melody[], int notes, int tempo)
 {
   // this calculates the duration of a whole note in ms
   int wholenote = (60000 * 4) / tempo;
@@ -42,7 +42,7 @@ void speaker_class::playTune(int melody[], int notes, int tempo)
 
 
 // Shortcuts
-void speaker_class::victoryTune()
+void buzzer_class::victoryTune()
 {
     // sizeof gives the number of bytes, each int value is composed of two bytes (16 bits)
     // there are two values per note (pitch and duration), so for each note there are four bytes
@@ -54,7 +54,7 @@ void speaker_class::victoryTune()
     playTune(victory_tune, notes, tempo);
 }
 
-void speaker_class::touchTune()
+void buzzer_class::touchTune()
 {
     // sizeof gives the number of bytes, each int value is composed of two bytes (16 bits)
     // there are two values per note (pitch and duration), so for each note there are four bytes
@@ -67,7 +67,7 @@ void speaker_class::touchTune()
 }
 
 /* To ADD
-void speaker_class::encouragementTune()
+void buzzer_class::encouragementTune()
 {
     // sizeof gives the number of bytes, each int value is composed of two bytes (16 bits)
     // there are two values per note (pitch and duration), so for each note there are four bytes

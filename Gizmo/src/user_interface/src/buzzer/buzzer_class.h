@@ -1,10 +1,10 @@
 
-#ifndef speaker_h
-  #define speaker_h
+#ifndef buzzer_h
+  #define buzzer_h
   
   #include "Arduino.h"
   
-  class speaker_class {
+  class buzzer_class {
     private:
         void playTune(int melody[], int notes, int tempo);
 
