@@ -22,10 +22,17 @@ void setup() {
 //----------------------------------------------//
 
 void loop() {
-  ui.ui_menu();
+  //ui.ui_menu();
   String user_selection = ui.ui_menu();
   if (user_selection == "START")
   {
     screen.victory();
+  }
+  else if (user_selection == "CALIBRATION")
+  {
+    screen.calibrate();
+    screen.eyes_resting_2();
+    screen.eyes_happy_2();
+    screen.eyes_open_2();
   }
 }

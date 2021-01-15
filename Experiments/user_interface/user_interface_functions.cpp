@@ -26,6 +26,8 @@ uint8_t ui_state = INACTIVE;
 
 String user_interface_class::ui_menu()
 {
+    String selection  = "";
+    
     // Start with Main Menu and Start Selected
     ui_state = MENU_START;
     oled.menu_start();
@@ -68,9 +70,7 @@ String user_interface_class::ui_menu()
             case START_START:
                 if(ui_button.checkSelect() == 1){
                     ui_state = INACTIVE;
-                    oled.countdown();
-                    oled.eyes_open();
-                    return("START");
+                    selection = "START";
                 }
 
                 else if(ui_button.checkNext() == 1) {
@@ -156,11 +156,7 @@ String user_interface_class::ui_menu()
             case CAL_START:
                 if(ui_button.checkSelect() == 1){
                     ui_state = INACTIVE;
-                    oled.calibrate();
-                    oled.eyes_resting_2();
-                    oled.eyes_happy_2();
-                    oled.eyes_open_2();
-                    return("CALIBRATION");
+                    selection = "CALIBRATION";
                 }
 
                 else if(ui_button.checkNext() == 1) {
@@ -170,6 +166,8 @@ String user_interface_class::ui_menu()
                 break;
         }
     }
+
+    return(selection);
 }
 
 
