@@ -6,7 +6,7 @@
 #include "GizmoPins.h"
 #include "src/user_interface/user_interface_class.h"
 //#include ...Need line following code (Should include motor control and sensors)
-//#include ...Need ultrasound code  (Needs simple function calls with an optional threshold input and returns "touch/no touch")
+#include "src/ultrasound/ultrasound_class.h"
 //#include ...Need SD Card code 
 
 // Class Instantiations

@@ -1,8 +1,11 @@
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
-#include "common.h"
+#include "ultrasound_class.h"
 #include <SPI.h>
 #include <Wire.h>
+
+
+ultrasound_class ultrasound;
 
 /*
  * This will test the ultrasound and display the time it took to reach out and interact
@@ -10,16 +13,13 @@
 
 Adafruit_SSD1306 display = Adafruit_SSD1306(128, 64, &Wire);
 unsigned long time;
-long duration;
-int distance;
 unsigned long elapsed;
 unsigned long activateTime;
 int isFirst = 1;
 
 void setup() {
 
-  pinMode(trigger, OUTPUT);
-  pinMode(echo, INPUT);
+  ultrasound.ultrasound_setup();
 
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C); // begins display, displays arduino logo by default
   display.clearDisplay(); //This will clear the adafruit logo
@@ -36,10 +36,10 @@ void setup() {
 
 void loop() {
 
-  byte distance = runUltrasound();
+  byte distance = ultrasound.runUltrasound();
   display.clearDisplay();
   display.setCursor(0, 0);
-  display.print("distance (in): ");
+  display.print("distance (cm): ");
   display.print(distance);
   display.display();
 
@@ -52,39 +52,4 @@ void loop() {
   }
 
 
-}
-
-byte runUltrasound() {
-  
-
-  digitalWrite(trigger, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigger, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigger, LOW);
-
-  duration = pulseIn(echo, HIGH);
-
-  distance = duration * 0.034 / 2;
-
-  // convert the time into a distance
-  return byte(distance);
-}
-
-void printStart() {
-
-    display.clearDisplay(); 
-    display.setCursor(0, 0);
-    display.println("Interact");
-    display.display();
-}
-
-void printDisplay(float duration) {
-  display.clearDisplay();
-  display.setCursor(0, 0);
-  display.print("distance (cm): ");
-  display.print(distance);
-  display.display();
-
-  delay(3000);
 }
