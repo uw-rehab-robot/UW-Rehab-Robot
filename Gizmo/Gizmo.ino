@@ -12,6 +12,8 @@
 // Class Instantiations
 user_interface_class  ui;
 oled_screen_class screen;
+buzzer_class buzzer;
+ultrasound_class ultrasound;
 
 // Import Definitions from GizmoPins.h
 using namespace PINS;
@@ -27,6 +29,13 @@ enum gizmo_state_enum { INACTIVE,
 uint8_t current_state = MENU;
 String user_selection = "";
 
+unsigned int  sessionMinutes = 1;  // in minutes
+int           score;
+
+unsigned int sessionTime;
+unsigned int gameStartTime;
+unsigned int gameEndTime;
+int touchResult = 0;
 
 //----------------------------------------------//
 // Setup Function (One Time At Startup)
@@ -35,6 +44,9 @@ void setup()
 {
   // User Interface Setup
   ui.ui_setup();  // Button, OLED screen, Speaker Setup
+
+  // Ultrasound Setup
+  ultrasound.ultrasound_setup();
 
   startup();
 }
@@ -90,10 +102,44 @@ void loop()
 
       // Run through the game
       case GAME:
-        // ADD GAME CODE HERE //
+        // local variables
+        sessionTime = sessionMinutes*60*1000; // Convert to seconds, then miliseconds
+        gameStartTime   = millis();
+        gameEndTime     = sessionTime + gameStartTime;
+        touchResult = 0;
+        
+        score           = 0;
+    
         screen.countdown();   // To Do: Remove once real game routine is ready
-        screen.eyes_open();   // To Do: Remove once real game routine is ready
+        // wait specified time (30 sec default) or until ultrasound sensor to read <=10
+        while(millis() < gameEndTime)
+        {
+          // Start line following
+          // ADD LINE FOLLOW FOR x Seconds here
+          screen.print_text((char*)"Pretending\nTo Follow\nA Line",2);
+          delay(2000);  // To Do: replace with milis based wait...
+          
+          // Wait For Touch
+          touchResult = 0;
+          screen.print_text((char*)"Waiting \nFor \nTouch...", 2);
+          touchResult = ultrasound.waitForTouch(10);
+          if (touchResult == 1)
+          {
+              screen.eyes_happy();
+              buzzer.touchTune();
+              score++;
+              // Increase the score by one
+          }
+          else
+          {
+              screen.eyes_resting();
+          }
+
+        }
         current_state = MENU; // No game code so moving back to menu...
+        screen.update_score(score);
+        screen.display_score();
+        delay(3000);  // To Do: replace with milis based wait...
         break;
 
       // Run through the calibration
