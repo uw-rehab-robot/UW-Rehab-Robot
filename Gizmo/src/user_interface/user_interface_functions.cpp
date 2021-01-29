@@ -4,7 +4,6 @@
 // Class Instantiations
 ui_button_class ui_button;
 oled_screen_class oled;
-buzzer_class buzzer;
 
 
 // State Definitions
