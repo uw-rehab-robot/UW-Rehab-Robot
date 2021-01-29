@@ -1,4 +1,4 @@
-#pragma once //not sure how this works, but aparently is used for code robustness in C++
+#pragma once; //not sure how this works, but aparently is used for code robustness in C++
 namespace defs {
 
 #define SECOND 1000 //1000 milliseconds per second
@@ -9,8 +9,8 @@ const int SESSION_DURATION = 2 * MINUTE; //defines the length of a session. cons
 const int NUM_SENSORS = 5;
 
 // to be set when the sensor max and min are known, and put here to improve code flexibility if we change sensors at any point.
-const int SENSOR_MAX = 1024;
-const int SENSOR_MIN = 0;
+const int SENSOR_MAX = 880;
+const int SENSOR_MIN = 40;
 
 //Initialize array to store sensor values
 int sensorDataRaw[NUM_SENSORS];
@@ -31,13 +31,12 @@ const float weightArray[] = {-OUTER_WEIGHT, -INNER_WEIGHT, CENTER_WEIGHT, INNER_
 //number of data points to be collected. Will be made redundant with file datalogging
 //const int dataPoints = 50;
 
-const int DRIVE_TIME = 10; //Defines how long (in milliseconds) motors drive in forward functions. Keep this very low to reduce wagging
 const int SPEED = 75;
 
 // these constants are used to allow you to make your motor configuration
 // line up with function names like forward.  Value can be 1 or -1
-const int offsetA = 1;
-const int offsetB = -1; //                                                     Change one of these, can't remember which
+const int offsetA = -1;
+const int offsetB = 1; //                                                     Change one of these, can't remember which
 
 //Digital
 #define AIN1 7
@@ -49,7 +48,7 @@ const int offsetB = -1; //                                                     C
 //Optional
 #define STBY 6 //we may need to use this pin for ultrasonic range finder
 
-#define BUTTON 2 //used for interface
+#define BUTTON PD1 //used for interface
 
 //pins used for SD cards communication
 #define SD_CS 10 //SD card select pin, may be able to use this pin for other tasks when not using SD card
@@ -58,18 +57,21 @@ const int offsetB = -1; //                                                     C
 #define SCK 13
 
 //Analog
-//sensor pins, reflects current wiring (2/18/2020)
-#define sensor0 A2
-#define sensor1 A1
-#define centerSensor A0
-#define sensor3 A7
-#define sensor4 A6
+//sensor pins, reflects current wiring (8/24/2020)
+#define sensor0 A1
+#define sensor1 A0
+#define centerSensor A2
+#define sensor3 A6
+#define sensor4 A7
 const int IRSensor[] = {sensor0, sensor1, centerSensor, sensor3, sensor4};
 
-#define display_write A3
-#define display_read A4
+//Not used right now
+//#define display_write A3
+//#define display_read A4
 
-#define trigger 2  // Need to find another pin, or determine if we can use two
-#define echo 2
+#define trigger 2
+#define echo A3
+
+
 
 }//end of namespace defs
