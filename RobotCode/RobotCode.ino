@@ -9,6 +9,8 @@
 #include <SD.h>
 #include <SPI.h>
 
+oled_screen_class screen;
+
 using namespace defs; //inlcudes all definitions made in common.h
 
 namespace //limits the scope of decalations inside namespace to this file.
@@ -20,10 +22,8 @@ namespace //limits the scope of decalations inside namespace to this file.
   Timer outputTimer = Timer(SECOND);  // one second interval between outputs
   Timer logTimer = Timer(SECOND * 5); // set a timer to log all values during that time.
 
-  SDCard sensorRecord = SDCard(SD_CS, "sensors.csv");
-  SDCard calibrationVals = SDCard(SD_CS, "calibr.dat");
-
-  OledScreen screen = OledScreen();
+  //SDCard sensorRecord = SDCard(SD_CS, "sensors.csv");
+  //SDCard calibrationVals = SDCard(SD_CS, "calibr.dat");
 
   int maxIR = SENSOR_MAX;
   int minIR = SENSOR_MIN;
@@ -49,13 +49,13 @@ void setup()
   pinMode(13, OUTPUT); //only needed once so done in setup()
   //Serial.begin(9600);
   //Serial.println("Connected"); //quick check to make sure device is communicating
-
+  screen.oled_setup();
   startup();
 }
 
 void startup()
 //distinct from setup as is used to begin user related behavior rather than hardware requirements.
-{ screen.print_text('Begin', 1);
+{ screen.print_text((char*)"Begin", 1);
   pinMode(BUTTON, INPUT);
   Timer calibrateStartupTimer = Timer(5 * SECOND);
   //wait for 5 seconds at startup. If button is pressed, recalibrate. otherwise, load from file.
@@ -70,19 +70,19 @@ void startup()
   }
   if (newCalibration)
   {
-    screen.print_text('Calibrating');
+    screen.print_text((char*)"Calibrating");
     calibrate();
 
     // For debugging
-    screen.print_text('calibration complete');
+    screen.print_text((char*)"calibration complete");
     delay(3000);
-    calibrationFromFile();  // Way to view calibration files
+    //calibrationFromFile();  // Way to view calibration files
   }
   else
   {
-    calibrationFromFile();
+    //calibrationFromFile();
   }
-  screen.print_text('Beginning');
+  screen.print_text((char*)"Beginning", 2);
   delay(1000);
   runSession();
 }
@@ -103,7 +103,7 @@ void runSession()
   {
     if (digitalRead(BUTTON))
     {
-      screen.print_text('Game stopped', 1);
+      screen.print_text((char*)"Game stopped", 1);
       exit(0);
     }
     if (runUltrasound() <= 20)
@@ -227,7 +227,7 @@ void calibrate()
   minIR = 0.9 * tempMin;
 
   Calibration values;
-  calibrationVals.write((byte *)&values, sizeof(values));
+  //calibrationVals.write((byte *)&values, sizeof(values));
 }
 
 int getMax(int tempMax)
@@ -250,7 +250,7 @@ int getMin(int tempMin)
   return tempMin; //Returns tempMin to the calibrate while loop
 }
 
-void calibrationFromFile()
+/*void calibrationFromFile()
 //sets the calibration values from the previous values stored on SD in "calibr.dat"
 {
   //Serial.println("reading previous calibration values from file");
@@ -260,11 +260,11 @@ void calibrationFromFile()
   maxIR = vals.max_ir;
   minIR = vals.min_ir;
 
-  screen.print_text(maxIR);
+  screen.print_text((char*)maxIR);
   delay(3000);
-  screen.print_text(minIR);
+  screen.print_text((char*)minIR);
   delay(3000);
-}
+}*/
 
 byte runUltrasound() {
   

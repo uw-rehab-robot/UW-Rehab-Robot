@@ -1,4 +1,5 @@
-#pragma once; //not sure how this works, but aparently is used for code robustness in C++
+#pragma once
+//not sure how this works, but aparently is used for code robustness in C++
 namespace defs {
 
 #define SECOND 1000 //1000 milliseconds per second
@@ -39,38 +40,38 @@ const int offsetA = -1;
 const int offsetB = 1; //                                                     Change one of these, can't remember which
 
 //Digital
-#define AIN1 7
-#define BIN1 5
-#define AIN2 8
-#define BIN2 4
-#define PWMA 9
-#define PWMB 3
+#define AIN1 6
+#define BIN1 4
+#define AIN2 7
+#define BIN2 3
+#define PWMA 8
+#define PWMB 2
 //Optional
-#define STBY 6 //we may need to use this pin for ultrasonic range finder
+#define STBY 5 //we may need to use this pin for ultrasonic range finder
 
-#define BUTTON PD1 //used for interface
+#define BUTTON 28 //used for interface
 
 //pins used for SD cards communication
 #define SD_CS 10 //SD card select pin, may be able to use this pin for other tasks when not using SD card
-#define MOSI 11
-#define MISO 12
-#define SCK 13
+#define SD_MOSI 11
+#define SD_MISO 12
+#define SD_SCK 13
 
 //Analog
-//sensor pins, reflects current wiring (8/24/2020)
-#define sensor0 A1
-#define sensor1 A0
+//sensor pins, reflects current wiring (01/28/2021)
+#define sensor4 A4
+#define sensor3 A3
 #define centerSensor A2
-#define sensor3 A6
-#define sensor4 A7
+#define sensor1 A1
+#define sensor0 A0
 const int IRSensor[] = {sensor0, sensor1, centerSensor, sensor3, sensor4};
 
 //Not used right now
 //#define display_write A3
 //#define display_read A4
 
-#define trigger 2
-#define echo A3
+#define trigger 0
+#define echo A5
 
 
 
