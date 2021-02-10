@@ -32,13 +32,13 @@ const float weightArray[] = {-OUTER_WEIGHT, -INNER_WEIGHT, CENTER_WEIGHT, INNER_
 //number of data points to be collected. Will be made redundant with file datalogging
 //const int dataPoints = 50;
 
-const int DRIVE_TIME = 10; //Defines how long (in milliseconds) motors drive in forward functions. Keep this very low to reduce wagging
+const int DRIVE_TIME = 15; //(changed from 10 to 15) Defines how long (in milliseconds) motors drive in forward functions. Keep this very low to reduce wagging
 const int SPEED = 75;
 
 // these constants are used to allow you to make your motor configuration
 // line up with function names like forward.  Value can be 1 or -1
-const int offsetA = -1;
-const int offsetB = 1; //                                                     Change one of these, can't remember which
+const int offsetA = -1;  
+const int offsetB = -1; //changed from 1 to -1 (made line following work better/straighter)                                                   Change one of these, can't remember which
 
 //Digital
 #define AIN1 6
