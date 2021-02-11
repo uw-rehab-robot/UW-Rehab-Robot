@@ -5,7 +5,8 @@ Line Sensor Example Code
 #include "line_sensor_class.h"
 
 // Variables
-uint8_t lineSensors, lineDetectCount;  // Used to temporarily store IR (line) sensor values
+int lineSensorsAnalog[5];
+uint8_t lineSensorsBinary, lineDetectCount;  // Used to temporarily store IR (line) sensor values
 
 
 // Class Instantiation
@@ -19,14 +20,18 @@ void setup() {
 }
 
 void loop() {
-    lineSensors    = lineSensor.read_line();
-    lineDetectCount = lineSensor.count_line_detects(lineSensors);
-    Serial.println(lineDetectCount);
-    Serial.println(lineSensors);
-    /*for(int i = 0; i < 5; i++){
-        
-        Serial.print(" ");
+    lineSensor.get_sensors_analog(lineSensorsAnalog);
+    lineSensorsBinary = lineSensor.read_line_binary();
+    lineDetectCount   = lineSensor.count_line_detects(lineSensorsBinary);
+    Serial.print("Analog Values: ");
+    for(int i=0; i<5; i++)
+    {
+        Serial.print(lineSensorsAnalog[i]);
     }
-    Serial.println();  */
-    delay(250);
+    Serial.println("Binary Values: ");
+    Serial.print(lineSensorsBinary);
+    Serial.println("Line Detections: ");
+    Serial.print(lineDetectCount);
+    Serial.println();
+    delay(250); // Delay 1/4 second between measurements
 }

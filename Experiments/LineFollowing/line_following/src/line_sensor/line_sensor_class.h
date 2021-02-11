@@ -17,6 +17,7 @@
     // Definitions
     // Default value used without calibration (TBA)
     #define minDetectThreshold 900
+    #define gizmoSensorCount 5
 
     // Class Declaration
     class line_sensor_class
@@ -25,7 +26,8 @@
         public:
             // Functions
             // TO ADD: calibrate_line();
-            uint8_t read_line(int minThreshold=minDetectThreshold);
+            void get_sensors_analog(int *sensorValues, int numberOfSensors=gizmoSensorCount);
+            uint8_t read_line_binary(int minThreshold=minDetectThreshold);
             uint8_t count_line_detects(uint8_t sensorValues);
     };
 #endif

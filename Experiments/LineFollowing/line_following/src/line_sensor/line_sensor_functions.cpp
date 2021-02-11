@@ -12,7 +12,18 @@ int farRightSensor      = 16;
 const int IRSensor[] = {farLeftSensor, middleLeftSensor, centerSensor, middleRightSensor, farRightSensor};
 
 // Global Functions
-uint8_t line_sensor_class::read_line(int minThreshold)
+//  Reads analog values from the sensors into an array
+void line_sensor_class::get_sensors_analog(int *sensorValues, int numberOfSensors)
+{
+    // Run for every sensor position (left to right)
+    for(int i=0; i<numberOfSensors; i++)
+    {
+        // Read sensor value
+        sensorValues[i] = analogRead(IRSensor[i]);
+    }
+}
+
+uint8_t line_sensor_class::read_line_binary(int minThreshold)
 {
     int sensorVal;
     uint8_t lineDetects=0, bitmask=0b10000000;
@@ -35,16 +46,17 @@ uint8_t line_sensor_class::read_line(int minThreshold)
     return lineDetects;
 }
 
+
 /*  Counts and returns the number of sensors that are over the line.
  */
-uint8_t line_sensor_class::count_line_detects(uint8_t sensorValues)
+uint8_t line_sensor_class::count_line_detects(uint8_t lineDetects)
 {
-  uint8_t bitmask=0b10000000, binaryCount=0;  
+  uint8_t bitmask=0b10000000, lineDetectCount=0;  
   for(uint8_t i=0; i<5; i++)
   {
-    if(sensorValues & bitmask)
-      binaryCount++;
+    if(lineDetects & bitmask)
+      lineDetectCount++;
     bitmask = bitmask>>1;
   }
-  return binaryCount;
+  return lineDetectCount;
 }

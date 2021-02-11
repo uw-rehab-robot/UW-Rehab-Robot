@@ -117,7 +117,7 @@ void line_following_class::rotate_acute(uint8_t side)
     do
     {
         // Sample line sensors
-        binary = lineSensor.read_line();
+        binary = lineSensor.read_line_binary();
 
         // Check if not actually an acute angle
         if((side == LEFT && (binary & 0b00001000)) || (side == RIGHT && (binary & 0b10000000)))
@@ -135,7 +135,7 @@ void line_following_class::rotate_acute(uint8_t side)
     // Rotate until the the middle sensor is on? the line.
     while(binary & 0b00100000)
     {
-        binary = lineSensor.read_line();
+        binary = lineSensor.read_line_binary();
     }
 }
 
@@ -145,7 +145,7 @@ void line_following_class::rotate(uint8_t side)
     do
     {
         // Sample line sensors
-        binary = lineSensor.read_line();
+        binary = lineSensor.read_line_binary();
         if(side == RIGHT)
             right(leftMotor, rightMotor, ROTATE_SPEED);
         else
@@ -224,7 +224,7 @@ void line_following_class::follow_line(int duration)
     while(currentMillis - previousMillis < duration)
     {
         // Check sensors
-        lineSensors    = lineSensor.read_line();
+        lineSensors    = lineSensor.read_line_binary();
         // Count sensors over the line
         lineDetectCount = lineSensor.count_line_detects(lineSensors);
         Serial.print(lineDetectCount);
