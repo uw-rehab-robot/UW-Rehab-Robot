@@ -13,7 +13,6 @@ unsigned int    endTime;    // Variable used to hold end time (in ms) to end fun
 int             touch;      // Variable used to identify succesful detection "touch"
 
 // Global Functions
-// Class Functions
 byte ultrasound_class::runUltrasound()
 {
     digitalWrite(triggerPin, LOW);
