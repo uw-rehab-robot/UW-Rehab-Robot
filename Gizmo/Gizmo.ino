@@ -5,7 +5,7 @@
 // Include Libraries
 #include "GizmoPins.h"
 #include "src/user_interface/user_interface_class.h"
-//#include ...Need line following code (Should include motor control and sensors)
+#include "src/line_following/line_following_class.h"
 #include "src/ultrasound/ultrasound_class.h"
 //#include ...Need SD Card code 
 
@@ -13,6 +13,7 @@
 user_interface_class  ui;
 oled_screen_class screen;
 buzzer_class buzzer;
+line_following_class lineFollow;
 ultrasound_class ultrasound;
 
 // Import Definitions from GizmoPins.h
@@ -115,14 +116,12 @@ void loop()
         while(millis() < gameEndTime)
         {
           // Start line following
-          // ADD LINE FOLLOW FOR x Seconds here
-          screen.print_text((char*)"Pretending\nTo Follow\nA Line",2);
-          delay(2000);  // To Do: replace with milis based wait...
+          lineFollow.follow_line(10000); // units in ms
           
           // Wait For Touch
           touchResult = 0;
           screen.print_text((char*)"Waiting \nFor \nTouch...", 2);
-          touchResult = ultrasound.waitForTouch(10);
+          touchResult = ultrasound.waitForTouch(20); // units in sec
           if (touchResult == 1)
           {
               screen.eyes_happy();

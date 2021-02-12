@@ -27,10 +27,13 @@ void loop() {
     for(int i=0; i<5; i++)
     {
         Serial.print(lineSensorsAnalog[i]);
+        Serial.print(" ");
     }
-    Serial.println("Binary Values: ");
+    Serial.println();
+    Serial.print("Binary Values: ");
     Serial.print(lineSensorsBinary);
-    Serial.println("Line Detections: ");
+    Serial.println();
+    Serial.print("Line Detections: ");
     Serial.print(lineDetectCount);
     Serial.println();
     delay(250); // Delay 1/4 second between measurements

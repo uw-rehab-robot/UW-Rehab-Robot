@@ -16,7 +16,7 @@
 
     // Definitions
     // Default value used without calibration (TBA)
-    #define minDetectThreshold 900
+    #define minDetectThreshold 400
     #define gizmoSensorCount 5
 
     // Class Declaration
