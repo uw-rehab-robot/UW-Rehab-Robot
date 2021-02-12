@@ -29,7 +29,7 @@ enum gizmo_state_enum { INACTIVE,
 uint8_t current_state = MENU;
 String user_selection = "";
 
-unsigned int  sessionMinutes = 1;  // in minutes
+unsigned int  sessionMinutes = 3;  // in minutes
 int           score;
 
 unsigned int sessionTime;
