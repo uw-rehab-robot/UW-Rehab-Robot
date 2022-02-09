@@ -13,7 +13,9 @@ line_sensor_class lineSensor;
 // As of 02/09/21
 const int offsetA = -1;
 const int offsetB = 1;
-uint8_t lineSensors, lineDetectCount;  // Used to temporarily store IR (line) sensor values
+uint8_t lineSensors, lineDetectCount;   // Used to temporarily store IR (line) sensor values
+uint8_t leftMotorSpeed = 0;             // Used to keep track of motor speed last state
+uint8_t rightMotorSpeed = 0;            // Used to keep track of motor speed last state
 
 // Motor Driver Pins (As of 02/09/21)
 #define MD_AIN1_PIN     6
@@ -27,7 +29,7 @@ uint8_t lineSensors, lineDetectCount;  // Used to temporarily store IR (line) se
 #define LEFT            0
 #define RIGHT           1
 #define ROTATE_SPEED    100
-#define MAXSPEED        100
+#define MAXSPEED        400
 
 
 // Initializing motors.  The library will allow you to initialize as many
@@ -38,10 +40,12 @@ Motor leftMotor   = Motor(MD_AIN1_PIN, MD_AIN2_PIN, MD_PWMA_PIN, offsetA, MD_STB
 Motor rightMotor  = Motor(MD_BIN1_PIN, MD_BIN2_PIN, MD_PWMB_PIN, offsetB, MD_STBY_PIN);
 
 
-void line_following_class::set_motors(int leftMotorSpeed, int rightMotorSpeed)
+void line_following_class::set_motors(int leftMotorValue, int rightMotorValue)
 {
-    leftMotor.drive(leftMotorSpeed);
-    rightMotor.drive(rightMotorSpeed);
+    leftMotorSpeed = leftMotorValue;
+    rightMotorSpeed = rightMotorValue;
+    leftMotor.drive(leftMotorValue);
+    rightMotor.drive(rightMotorValue);
 }
 
 // Global Functions
@@ -58,66 +62,66 @@ void line_following_class::straight_lines(uint8_t binary)
         case 1:
             // Hard Right (Only using top 5 bits)
             if(binary == 0b00001000)
-                set_motors(MAXSPEED, (-1.0 * MAXSPEED));
+                set_motors((1.00 * MAXSPEED), (-1.00 * MAXSPEED));
 
             // Right (Only using top 5 bits)
             else if (binary == 0b00010000)
-                set_motors(MAXSPEED, (0.0 * MAXSPEED));
+                set_motors((0.80 * MAXSPEED), (-0.30 * MAXSPEED));
 
             // Straight
             else if (binary == 0b00100000)
-                set_motors(MAXSPEED, MAXSPEED);
+                set_motors((0.50 * MAXSPEED), (0.50 * MAXSPEED));
 
             // Left
             else if (binary == 0b01000000)
-                set_motors((0.0 * MAXSPEED), MAXSPEED);
+                set_motors((-0.30 * MAXSPEED), (0.80 * MAXSPEED));
             
             // Hard Left
             else if(binary == 0b10000000)
-                set_motors((-1.0 * MAXSPEED), MAXSPEED);
+                set_motors((-1.00 * MAXSPEED), (1.00 * MAXSPEED));
             break;
 
         // There were two diode detects, check for straight lines
         case 2:
             // Right (Only using top 5 bits)
             if(binary == 0b00011000)
-                set_motors(MAXSPEED, (-0.50 * MAXSPEED));
+                set_motors((0.90 * MAXSPEED), (-0.60 * MAXSPEED));
 
             // Right (Only using top 5 bits)
             else if(binary == 0b00110000)
-                set_motors(MAXSPEED, (0.50 * MAXSPEED));
+                set_motors((0.60 * MAXSPEED), (0.10 * MAXSPEED));
 
             // Left (Only using top 5 bits)
             else if(binary == 0b01100000)
-                set_motors(0.50 * MAXSPEED, MAXSPEED);
+                set_motors((0.10 * MAXSPEED), (0.60 * MAXSPEED));
 
             // Left (Only using top 5 bits)
             else if(binary == 0b11000000)
-                set_motors((-0.50 * MAXSPEED), MAXSPEED);
+                set_motors((-0.60 * MAXSPEED), (0.90 * MAXSPEED));
 
         // There were three diode detects, check for straight lines
         case 3:
             // Right (Only using top 5 bits)
             if(binary == 0b00111000)
-                set_motors(MAXSPEED, (0.00 * MAXSPEED));
+                set_motors((0.80 * MAXSPEED), (-0.30 * MAXSPEED));
 
             // Straight (Only using top 5 bits)
             else if(binary == 0b01110000)
-                set_motors(MAXSPEED, MAXSPEED);
+                set_motors((0.30 * MAXSPEED), (0.30 * MAXSPEED));
 
             // Left (Only using top 5 bits)
             else if(binary == 0b11100000)
-                set_motors((0.00 * MAXSPEED), MAXSPEED);
+                set_motors((-0.30 * MAXSPEED), (0.80 * MAXSPEED));
 
         // There were four diode detects, check for straight lines
         case 4:
             // Right (Only using top 5 bits)
             if(binary == 0b01111000)
-              set_motors((0.75 * MAXSPEED), (0.25 * MAXSPEED));
+              set_motors((0.50 * MAXSPEED), (0.00 * MAXSPEED));
 
             // Left (Only using top 5 bits)
             else if (binary == 0b11110)
-              set_motors((0.25 * MAXSPEED), (0.75 * MAXSPEED));
+              set_motors((0.00 * MAXSPEED), (0.50 * MAXSPEED));
     }
 }
 
@@ -183,17 +187,12 @@ void line_following_class::angles(uint8_t binary)
                 rotate_acute(LEFT);
   
             // Acute Left Turn
-            else if (binary == 0b10010000)
+            else if (binary == 0b10100000)
                 rotate_acute(LEFT);
 
         // There were thtree diode detects, check for acute and 90 degree angles
         case 3:
-            // 90 Degree Right Turn
-            if (binary == 0b00111000)
-                rotate(RIGHT);
-            
-            // Acute Right Turn
-            else if (binary == 0b01011000)
+            if (binary == 0b01011000)
                 rotate_acute(RIGHT);
   
             // Acute Right Turn
@@ -207,10 +206,6 @@ void line_following_class::angles(uint8_t binary)
             // Acute Left Turn
             else if (binary == 0b11010000)
                 rotate_acute(LEFT);
-
-            // 90 Degree Left Turn
-            else if (binary == 0b11100000)
-                rotate(RIGHT);
 
         // There were four diode detects, check for acute angles and 90 degree angles
         case 4:        
@@ -227,6 +222,7 @@ void line_following_class::angles(uint8_t binary)
 
 void line_following_class::follow_line(int duration)
 {
+    // Initialize timer
     unsigned long currentMillis = millis();
     previousMillis = currentMillis;
 
@@ -242,7 +238,12 @@ void line_following_class::follow_line(int duration)
         {
             // Zero diode detections means loss of line
             case 0:
-                // Keep doing whatever was being done before to reaquire line
+                // If motors were already moving, keep doing whatever was being done before to reaquire line
+                if (leftMotorSpeed + rightMotorSpeed > 0)
+                    set_motors(leftMotorSpeed, rightMotorSpeed);
+                // Else motors were stationary, try rotating left to find the edge of the line
+                else
+                    rotate(LEFT);
                 break;
             
             // Single diode detection must mean straight line
@@ -282,4 +283,8 @@ void line_following_class::follow_line(int duration)
         // Update current time
         currentMillis = millis();
     }
+    
+    // Done following line, stop robot. Don't use set_motors() to preserve motor speed last state
+    leftMotor.drive(0);
+    rightMotor.drive(0);
 }
