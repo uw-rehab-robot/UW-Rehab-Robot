@@ -49,6 +49,7 @@
         public:
             // Variables
             int score = 0;  // Used to keep track of score
+            int stops = 0;  // Used to keep track of total number of stops
 
             // Functions
             void oled_setup();
@@ -77,6 +78,8 @@
             void print_text(char str[], int text_size);
             void victory();
             void display_score();
+            void display_final_result();
             void update_score(int newScore);
+            void update_stops(int newStops);
     };
 #endif

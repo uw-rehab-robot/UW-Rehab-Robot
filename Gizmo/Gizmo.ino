@@ -30,8 +30,9 @@ enum gizmo_state_enum { INACTIVE,
 uint8_t current_state = MENU;
 String user_selection = "";
 
-unsigned int  sessionMinutes = 3;  // in minutes
+unsigned int  sessionMinutes = 3.25;  // in minutes
 int           score;
+int           stops;
 
 unsigned int sessionTime;
 unsigned int gameStartTime;
@@ -104,14 +105,14 @@ void loop()
       // Run through the game
       case GAME:
         // local variables
-        sessionTime = sessionMinutes*60*1000; // Convert to seconds, then miliseconds
+        sessionTime     = sessionMinutes*60*1000; // Convert to seconds, then miliseconds
         gameStartTime   = millis();
         gameEndTime     = sessionTime + gameStartTime;
-        touchResult = 0;
-        
+        touchResult     = 0;
+        stops           = 0;
         score           = 0;
     
-        screen.countdown();   // To Do: Remove once real game routine is ready
+        screen.countdown();
         // wait specified time (30 sec default) or until ultrasound sensor to read <=10
         while(millis() < gameEndTime)
         {
@@ -133,12 +134,16 @@ void loop()
           {
               screen.eyes_resting();
           }
+          stops++;
 
         }
         current_state = MENU; // No game code so moving back to menu...
         screen.update_score(score);
-        screen.display_score();
-        delay(3000);  // To Do: replace with milis based wait...
+        screen.update_stops(stops);
+        screen.victory();
+        buzzer.victoryTune();
+        screen.display_final_result();
+        delay(5000);  // To Do: replace with milis based wait...
         break;
 
       // Run through the calibration

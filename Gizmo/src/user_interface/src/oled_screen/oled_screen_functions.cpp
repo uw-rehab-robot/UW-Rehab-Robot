@@ -125,15 +125,36 @@ void oled_screen_class::display_score() {
 }
 
 
+//---------------------------------
+// Function to display the final result
+//---------------------------------
+void oled_screen_class::display_final_result() {
+    display.clearDisplay();
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(0,0);
+
+    display.print("\nScore = ");
+    display.print(score);
+    display.print("\nStops = ");
+    display.print(stops);
+    display.display();
+}
+
 
 //---------------------------------
 // Function to update the current score and display the new score
 //---------------------------------
 void oled_screen_class::update_score(int newScore) {
     score = newScore;
-    display_score();
 }
 
+
+// Function to update the current score and display the new score
+//---------------------------------
+void oled_screen_class::update_stops(int newStops) {
+    stops = newStops;
+}
 
 
 //---------------------------------
