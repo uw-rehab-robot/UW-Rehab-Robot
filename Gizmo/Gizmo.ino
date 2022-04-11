@@ -5,7 +5,7 @@
 // Include Libraries
 #include "GizmoPins.h"
 #include "src/user_interface/user_interface_class.h"
-//#include ...Need line following code (Should include motor control and sensors)
+#include "src/line_following/line_following_class.h"
 #include "src/ultrasound/ultrasound_class.h"
 //#include ...Need SD Card code 
 
@@ -13,6 +13,7 @@
 user_interface_class  ui;
 oled_screen_class screen;
 buzzer_class buzzer;
+line_following_class lineFollow;
 ultrasound_class ultrasound;
 
 // Import Definitions from GizmoPins.h
@@ -29,8 +30,9 @@ enum gizmo_state_enum { INACTIVE,
 uint8_t current_state = MENU;
 String user_selection = "";
 
-unsigned int  sessionMinutes = 1;  // in minutes
+unsigned int  sessionMinutes = 3.25;  // in minutes
 int           score;
+int           stops;
 
 unsigned int sessionTime;
 unsigned int gameStartTime;
@@ -103,26 +105,24 @@ void loop()
       // Run through the game
       case GAME:
         // local variables
-        sessionTime = sessionMinutes*60*1000; // Convert to seconds, then miliseconds
+        sessionTime     = sessionMinutes*60*1000; // Convert to seconds, then miliseconds
         gameStartTime   = millis();
         gameEndTime     = sessionTime + gameStartTime;
-        touchResult = 0;
-        
+        touchResult     = 0;
+        stops           = 0;
         score           = 0;
     
-        screen.countdown();   // To Do: Remove once real game routine is ready
+        screen.countdown();
         // wait specified time (30 sec default) or until ultrasound sensor to read <=10
         while(millis() < gameEndTime)
         {
           // Start line following
-          // ADD LINE FOLLOW FOR x Seconds here
-          screen.print_text((char*)"Pretending\nTo Follow\nA Line",2);
-          delay(2000);  // To Do: replace with milis based wait...
+          lineFollow.follow_line(10000); // units in ms
           
           // Wait For Touch
           touchResult = 0;
           screen.print_text((char*)"Waiting \nFor \nTouch...", 2);
-          touchResult = ultrasound.waitForTouch(10);
+          touchResult = ultrasound.waitForTouch(20); // units in sec
           if (touchResult == 1)
           {
               screen.eyes_happy();
@@ -134,12 +134,16 @@ void loop()
           {
               screen.eyes_resting();
           }
+          stops++;
 
         }
         current_state = MENU; // No game code so moving back to menu...
         screen.update_score(score);
-        screen.display_score();
-        delay(3000);  // To Do: replace with milis based wait...
+        screen.update_stops(stops);
+        screen.victory();
+        buzzer.victoryTune();
+        screen.display_final_result();
+        delay(5000);  // To Do: replace with milis based wait...
         break;
 
       // Run through the calibration

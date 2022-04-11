@@ -1,7 +1,7 @@
 /*******************************************************************************
 * OLED Screen Library
 *
-* File name:    oled_screen_class.h
+* File name:    oled_screen.h
 *
 *
 *
@@ -18,7 +18,7 @@
     #include <Adafruit_SSD1306.h> // Need to comment out line 56 "#define HAVE_PORTREG" as Artemis does not currently support these...
 
     // Local Libraries
-    #include "bitmaps_library.h"
+    #include "bitmaps.h"
 
     // Definitions
     #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -49,7 +49,6 @@
         public:
             // Variables
             int score = 0;  // Used to keep track of score
-            int stops = 0;  // Used to keep track of total number of stops
 
             // Functions
             void oled_setup();
@@ -75,11 +74,9 @@
             void eyes_open_2();
             void eyes_resting();
             void eyes_resting_2();
-            void print_text(char str[], int text_size);
+            void print_text(char str[], int text_size=2);
             void victory();
             void display_score();
-            void display_final_result();
             void update_score(int newScore);
-            void update_stops(int newStops);
     };
 #endif

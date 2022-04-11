@@ -1,5 +1,4 @@
-#pragma once
-//not sure how this works, but aparently is used for code robustness in C++
+#pragma once //not sure how this works, but aparently is used for code robustness in C++
 namespace defs {
 
 #define SECOND 1000 //1000 milliseconds per second
@@ -32,45 +31,49 @@ const float weightArray[] = {-OUTER_WEIGHT, -INNER_WEIGHT, CENTER_WEIGHT, INNER_
 //number of data points to be collected. Will be made redundant with file datalogging
 //const int dataPoints = 50;
 
-const int DRIVE_TIME = 15; //(changed from 10 to 15) Defines how long (in milliseconds) motors drive in forward functions. Keep this very low to reduce wagging
+const int DRIVE_TIME = 10; //Defines how long (in milliseconds) motors drive in forward functions. Keep this very low to reduce wagging
 const int SPEED = 75;
 
 // these constants are used to allow you to make your motor configuration
 // line up with function names like forward.  Value can be 1 or -1
-const int offsetA = -1;  
-const int offsetB = -1; //changed from 1 to -1 (made line following work better/straighter)                                                   Change one of these, can't remember which
+const int offsetA = 1;
+const int offsetB = -1; //                                                     Change one of these, can't remember which
 
 //Digital
-#define AIN1 6
-#define BIN1 4
-#define AIN2 7
-#define BIN2 3
-#define PWMA 8
-#define PWMB 2
+#define AIN1 7
+#define BIN1 5
+#define AIN2 8
+#define BIN2 4
+#define PWMA 9
+#define PWMB 3
 //Optional
-#define STBY 5 //we may need to use this pin for ultrasonic range finder
+#define STBY 6 //we may need to use this pin for ultrasonic range finder
 
-#define BUTTON 28 //used for interface
+#define BUTTON 2 //used for interface
 
 //pins used for SD cards communication
 #define SD_CS 10 //SD card select pin, may be able to use this pin for other tasks when not using SD card
-#define SD_MOSI 11
-#define SD_MISO 12
-#define SD_SCK 13
+#define MOSI 11
+#define MISO 12
+#define SCK 13
 
 //Analog
-//sensor pins, reflects current wiring (01/28/2021)
-#define sensor4 A4
-#define sensor3 A3
+//sensor pins, reflects current wiring (8/24/2020)
+#define sensor0 A1
+#define sensor1 A0
 #define centerSensor A2
-#define sensor1 A1
-#define sensor0 A0
+#define sensor3 A6
+#define sensor4 A7
 const int IRSensor[] = {sensor0, sensor1, centerSensor, sensor3, sensor4};
 
 #define display_write A3
 #define display_read A4
 
-#define trigger 0
-#define echo A5
+#define trigger 2  // Need to find another pin, or determine if we can use two
+#define echo 2
+
+// SPECIFICALLY FOR THIS TEST
+#define buttonPin -1 //Adjust this to follow button pin
+int increaseBy = 25;
 
 }//end of namespace defs

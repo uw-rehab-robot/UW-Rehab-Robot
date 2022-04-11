@@ -8,7 +8,7 @@
 *******************************************************************************/
 
 // Local Libraries
-#include "oled_screen_class.h"
+#include "oled_screen.h"
 
 // Call Adafruit display definition
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
@@ -19,10 +19,11 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 void oled_screen_class::oled_setup()
 {
     // Open I2C Serial Connection at 9600 Baud
-    Serial.begin(9600);
+    //Serial.begin(9600); perfomed in RobotCode setup
 
     // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-    if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x64
+    if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C))
+    { // Address 0x3C for 128x64
       Serial.println(F("SSD1306 allocation failed"));
       for(;;); // Don't proceed, loop forever
     }
@@ -35,7 +36,7 @@ void oled_screen_class::oled_setup()
     // Clear the buffer (must be done every time)
     display.clearDisplay();
 
-    //main_menu();//draw_bitmap(0, 0, main_menu_bmp, SCREEN_WIDTH, SCREEN_HEIGHT);    // Draw a bitmap image
+    menu_start();//draw_bitmap(0, 0, main_menu_bmp, SCREEN_WIDTH, SCREEN_HEIGHT);    // Draw a bitmap image
 };
 
 
@@ -62,17 +63,16 @@ void oled_screen_class::wait(long delay)
     unsigned long currentMillis = millis();
     previousMillis = currentMillis;
     
-    while(currentMillis - previousMillis < delay) {
+    while(currentMillis - previousMillis < delay)
+    {
         currentMillis = millis();
     }
 }
 
-
-
 //---------------------------------
 // Function to write an input string to the display
 //---------------------------------
-void oled_screen_class::print_text(char str[], int textSize=2)
+void oled_screen_class::print_text(char str[], int textSize)
 {
     #define charsPerLine 20 // Number of characters (textsize = 1) that fit on a line
     //int TextSize = 2;
@@ -86,21 +86,23 @@ void oled_screen_class::print_text(char str[], int textSize=2)
     display.setTextColor(WHITE);
     display.setCursor(0,0);
 
-
     for ( int i = 0 ; i < strlen(str); i++)
     {
-        if(str[i] == '\\' && str[i+1]=='n'){
+        if(str[i] == '\\' && str[i+1]=='n')
+        {
             currentPosition = 0;
             currentLine += textSize;
             display.setCursor(currentPosition,currentLine);
             i++;
         }
-        else if(currentPosition+textSize >= charsPerLine){
+        else if(currentPosition+textSize >= charsPerLine)
+        {
             currentPosition = 0;
             currentLine += textSize;
             display.setCursor(currentPosition,currentLine);
         }
-        else{
+        else
+        {
           display.print(str[i]);
           display.display();
           wait(10);
@@ -113,7 +115,8 @@ void oled_screen_class::print_text(char str[], int textSize=2)
 //---------------------------------
 // Function to display the score
 //---------------------------------
-void oled_screen_class::display_score() {
+void oled_screen_class::display_score()
+{
     display.clearDisplay();
     display.setTextSize(2);
     display.setTextColor(WHITE);
@@ -124,54 +127,37 @@ void oled_screen_class::display_score() {
     display.display();
 }
 
-
-//---------------------------------
-// Function to display the final result
-//---------------------------------
-void oled_screen_class::display_final_result() {
-    display.clearDisplay();
-    display.setTextSize(2);
-    display.setTextColor(WHITE);
-    display.setCursor(0,0);
-
-    display.print("\nScore = ");
-    display.print(score);
-    display.print("\nStops = ");
-    display.print(stops);
-    display.display();
-}
 
 
 //---------------------------------
 // Function to update the current score and display the new score
 //---------------------------------
-void oled_screen_class::update_score(int newScore) {
+void oled_screen_class::update_score(int newScore)
+{
     score = newScore;
+    display_score();
 }
 
-
-// Function to update the current score and display the new score
-//---------------------------------
-void oled_screen_class::update_stops(int newStops) {
-    stops = newStops;
-}
 
 
 //---------------------------------
 // Function to play animation
 //---------------------------------
-void oled_screen_class::lightShow() {
+void oled_screen_class::lightShow()
+{
   int16_t i;
 
   display.clearDisplay(); // Clear display buffer
 
-  for(i=0; i<display.width(); i+=4) {
-    display.drawLine(0, 0, i, display.height()-1, WHITE);
+  for (i = 0; i < display.width(); i += 4)
+  {
+    display.drawLine(0, 0, i, display.height() - 1, WHITE);
     display.display(); // Update screen with each newly-drawn line
     wait(1);
   }
-  for(i=0; i<display.height(); i+=4) {
-    display.drawLine(0, 0, display.width()-1, i, WHITE);
+  for (i = 0; i < display.height(); i += 4)
+  {
+    display.drawLine(0, 0, display.width() - 1, i, WHITE);
     display.display();
     wait(1);
   }
@@ -179,27 +165,15 @@ void oled_screen_class::lightShow() {
 
   display.clearDisplay();
 
-  for(i=0; i<display.width(); i+=4) {
-    display.drawLine(0, display.height()-1, i, 0, WHITE);
+  for (i = 0; i < display.width(); i += 4)
+  {
+    display.drawLine(0, display.height() - 1, i, 0, WHITE);
     display.display();
     wait(1);
   }
-  for(i=display.height()-1; i>=0; i-=4) {
-    display.drawLine(0, display.height()-1, display.width()-1, i, WHITE);
-    display.display();
-    wait(1);
-  }
-  wait(250);
-
-  display.clearDisplay();
-
-  for(i=display.width()-1; i>=0; i-=4) {
-    display.drawLine(display.width()-1, display.height()-1, i, 0, WHITE);
-    display.display();
-    wait(1);
-  }
-  for(i=display.height()-1; i>=0; i-=4) {
-    display.drawLine(display.width()-1, display.height()-1, 0, i, WHITE);
+  for (i = display.height() - 1; i >= 0; i -= 4)
+  {
+    display.drawLine(0, display.height() - 1, display.width() - 1, i, WHITE);
     display.display();
     wait(1);
   }
@@ -207,19 +181,35 @@ void oled_screen_class::lightShow() {
 
   display.clearDisplay();
 
-  for(i=0; i<display.height(); i+=4) {
-    display.drawLine(display.width()-1, 0, 0, i, WHITE);
+  for (i = display.width() - 1; i >= 0; i -= 4)
+  {
+    display.drawLine(display.width() - 1, display.height() - 1, i, 0, WHITE);
     display.display();
     wait(1);
   }
-  for(i=0; i<display.width(); i+=4) {
-    display.drawLine(display.width()-1, 0, i, display.height()-1, WHITE);
+  for (i = display.height() - 1; i >= 0; i -= 4)
+  {
+    display.drawLine(display.width() - 1, display.height() - 1, 0, i, WHITE);
+    display.display();
+    wait(1);
+  }
+  wait(250);
+
+  display.clearDisplay();
+
+  for (i = 0; i < display.height(); i += 4)
+  {
+    display.drawLine(display.width() - 1, 0, 0, i, WHITE);
+    display.display();
+    wait(1);
+  }
+  for (i = 0; i < display.width(); i += 4)
+  {
+    display.drawLine(display.width() - 1, 0, i, display.height() - 1, WHITE);
     display.display();
     wait(1);
   }
 }
-
-
 
 //---------------------------------
 // Function to display "Victory" animation
@@ -242,7 +232,6 @@ void oled_screen_class::victory()
     // Light Show
     lightShow();
 }
-
 
 
 //---------------------------------
